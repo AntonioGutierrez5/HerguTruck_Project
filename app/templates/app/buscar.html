@@ -1,0 +1,26 @@
+{% load static %}
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Resultados de búsqueda</h1>
+    {% if query %}
+        <p>Buscando por: <strong>{{ query }}</strong></p>
+        {% if resultados %}
+            <ul class="list-group">
+                {% for vehiculo in resultados %}
+                    <li class="list-group-item">
+                        <a href="{% url 'vehiculo-detail' vehiculo.id %}">
+                            {{ vehiculo.nombre }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No se encontraron resultados para "<strong>{{ query }}</strong>".</p>
+        {% endif %}
+    {% else %}
+        <p>Introduce un término de búsqueda para comenzar.</p>
+    {% endif %}
+</div>
+{% endblock %}

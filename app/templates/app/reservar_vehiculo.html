@@ -1,0 +1,42 @@
+
+{% block content %}
+    <h1>Reservar un Camión</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="vehiculo_id">Selecciona un vehículo</label>
+            <select name="vehiculo_id" class="form-control" required>
+                {% for vehiculo in vehiculos %}
+                    <option value="{{ vehiculo.id }}">{{ vehiculo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_inicio">Fecha de Inicio</label>
+            <input type="date" name="fecha_inicio" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_fin">Fecha de Fin</label>
+            <input type="date" name="fecha_fin" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="metodo_pago">Método de Pago</label>
+            <select name="metodo_pago" class="form-control" required>
+                <option value="tarjeta">Tarjeta</option>
+                <option value="paypal">PayPal</option>
+                <option value="transferencia">Transferencia</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="trayecto">Trayecto</label>
+            <textarea name="trayecto" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Realizar Reserva</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Vehículos - HerguTrucks</title>
+    <style>
+        /* General */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:courirer;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 20px;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            margin-bottom: 25px;
+            padding: 10px 0;
+            background-color: #eaeef3;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .breadcrumb a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .breadcrumb a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Title */
+        h1 {
+            color: #343a40;
+            font-size: 2.7em;
+            margin-bottom: 35px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Vehicle Grid */
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 10px;
+        }
+
+        /* Vehicle Card */
+        .vehicle-card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .vehicle-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .vehicle-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .vehicle-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .vehicle-name {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #333;
+            margin: 15px 0 5px;
+        }
+
+        .vehicle-type {
+            font-size: 1em;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .detail-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            color: #ffffff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .detail-link:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+
+        /* Footer Link */
+        .footer-link {
+            display: inline-block;
+            margin-top: 40px;
+            color: #007bff;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            transition: color 0.3s;
+        }
+        .footer-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .breadcrumb {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="{% url 'index' %}">Inicio</a> &gt; 
+        <span>Vehículos</span>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <h1>Vehículos Disponibles</h1>
+
+        <!-- Vehicle Grid -->
+        <div class="vehicle-grid">
+            {% load static %}
+
+            <!-- Vehicle Card Example -->
+            <div class="vehicle-card">
+                <img src="{% static 'img/cabeza1.png' %}" class="vehicle-image" alt="Cabezas">
+                <div class="vehicle-info">
+                    <div class="vehicle-name">Cabezas Tractoras</div>
+                    <a href="{% url 'cabezas' %}" class="detail-link">Ver Detalles</a>
+                </div>
+            </div>
+            <div class="vehicle-card">
+                <img src="{% static 'img/trailer.png' %}" class="vehicle-image" alt="Camión Articulado (Trailer)">
+                <div class="vehicle-info">
+                    <div class="vehicle-name">Camión Articulado (Trailer)</div>
+                    <a href="{% url 'trailer' %}" class="detail-link">Ver Detalles</a>
+                </div>
+            </div>
+            <div class="vehicle-card">
+                <img src="{% static 'img/cisterna1.png' %}" class="vehicle-image" alt="Cisterna">
+                <div class="vehicle-info">
+                    <div class="vehicle-name">Camiones Cisterna</div>
+                    <a href="{% url 'cisterna' %}" class="detail-link">Ver Detalles</a>
+                </div>
+            </div>
+            <div class="vehicle-card">
+                <img src="{% static 'img/frigo.png' %}" class="vehicle-image" alt="Frigorífico">
+                <div class="vehicle-info">
+                    <div class="vehicle-name">Camiones Frigorífico</div>
+                    <a href="{% url 'frigorifico' %}" class="detail-link">Ver Detalles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

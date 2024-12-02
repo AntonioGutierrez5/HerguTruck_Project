@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camiones Articulados</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: courirer;
+            background-color: #ecf0f1;
+            color: #34495e;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            gap: 30px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            margin-bottom: 20px;
+            padding: 10px 0;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .breadcrumb a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .breadcrumb a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Estilos para la barra de filtros */
+        .filters {
+            width: 30%;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+        }
+        .filters h2 {
+            font-size: 1.6em;% Scheduling
+            margin-bottom: 15px;
+            color: #2980b9;
+            font-weight: 700;
+        }
+        .filters label {
+            display: block;
+            margin-top: 25px;
+            font-weight: 500;
+            color: #34495e;
+        }
+        .filters input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: #2980b9;
+        }
+        .filters input[type="range"] {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .filters .price-range {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Estilos para la lista de vehículos */
+        .vehicle-list {
+            width: 75%;
+            list-style: none;
+            padding: 0;
+        }
+        .vehicle-item {
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s;
+        }
+        .vehicle-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .vehicle-image {
+            width: 150px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .vehicle-details {
+            flex: 1;
+        }
+        .vehicle-name {
+            font-size: 1.4em;
+            color: #2980b9;
+            font-weight: 700;
+        }
+        .vehicle-specs {
+            color: #7f8c8d;
+            margin: 5px 0;
+        }
+        .vehicle-price {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 1.2em;
+        }
+        .add-to-cart-btn {
+            padding: 10px 20px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .add-to-cart-btn:hover {
+            background-color: #1f639a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="{% url 'index' %}">Inicio</a> &gt; 
+        <a href="{% url 'vehiculo-list' %}">Vehículos</a> &gt; 
+        <span>Camiones Frigoríficos</span>
+    </div>
+
+    <div class="container">
+        <!-- Filtros -->
+        <aside class="filters">
+            <h2>Filtros</h2>
+            <label>Marca:</label>
+            <input type="checkbox" id="scania" onclick="filterVehicles()"> Scania<br>
+            <input type="checkbox" id="mercedes" onclick="filterVehicles()"> Mercedes<br>
+            <input type="checkbox" id="volvo" onclick="filterVehicles()"> Volvo<br>
+            <input type="checkbox" id="DAF" onclick="filterVehicles()"> DAF<br>
+
+            <label>Caja de Cambios:</label>
+            <input type="checkbox" id="automatica" onclick="filterVehicles()"> Automática<br>
+            <input type="checkbox" id="manual" onclick="filterVehicles()"> Manual<br>
+
+            <div class="price-range">
+                <label for="priceRange">Rango de Precio:</label>
+                <input type="range" id="priceRange" min="0" max="100000" step="1000" value="120000" onchange="filterVehicles()">
+                <span id="priceValue">100,000 €</span>
+            </div>
+        </aside>
+
+        <!-- Lista de vehículos -->
+        <ul class="vehicle-list" id="vehicleList">
+            {% load static %}
+            <li class="vehicle-item" data-marca="mercedes" data-transmision="Automática" data-precio="15900">
+                <img src="{% static 'img/fr1.png' %}" alt="mercedes" class="vehicle-image">
+                <div class="vehicle-details">
+                    <div class="vehicle-name">Mercedes Actros 2541</div>
+                    <div class="vehicle-specs">Año: 2009 | Kilometraje: 938.000 Km | Transmisión: Automática</div>
+                    <div class="vehicle-price">15.900 €</div><br>
+                    <a href="{% url 'agregar-al-carrito' 5 %}" class="add-to-cart-btn">Añadir al carrito</a>
+                </div>
+            </li>
+            <li class="vehicle-item" data-marca="DAF" data-transmision="Manual" data-precio="70000">
+                <img src="{% static 'img/fr2.png' %}" alt="DAF" class="vehicle-image">
+                <div class="vehicle-details">
+                    <div class="vehicle-name">DAF XF 450</div>
+                    <div class="vehicle-specs">Año: 2019 | Kilometraje: 470.000 Km | Transmisión: Manual</div>
+                    <div class="vehicle-price">70.000 €</div><br>
+                    <a href="{% url 'agregar-al-carrito' 6 %}" class="add-to-cart-btn">Añadir al carrito</a>
+                </div>
+            </li>
+            <li class="vehicle-item" data-marca="volvo" data-transmision="Manual" data-precio="24140">
+                <img src="{% static 'img/fr3.png' %}" alt="volvo" class="vehicle-image">
+                <div class="vehicle-details">
+                    <div class="vehicle-name">Volvo FM 330</div>
+                    <div class="vehicle-specs">Año: 2010 | Kilometraje: 830.000 Km | Transmisión: Manual</div>
+                    <div class="vehicle-price">24.140 €</div><br>
+                    <a href="{% url 'agregar-al-carrito' 7 %}" class="add-to-cart-btn">Añadir al carrito</a>
+                </div>
+            </li>
+            <li class="vehicle-item" data-marca="scania" data-transmision="Automatica" data-precio="53700">
+                <img src="{% static 'img/fr4.png' %}" alt="scania" class="vehicle-image">
+                <div class="vehicle-details">
+                    <div class="vehicle-name">Scania P360</div>
+                    <div class="vehicle-specs">Año: 2016 | Kilometraje: 320.000 Km | Transmisión: Automatica</div>
+                    <div class="vehicle-price">53.700 €</div><br>
+                    <a href="{% url 'agregar-al-carrito' 8 %}" class="add-to-cart-btn">Añadir al carrito</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        function filterVehicles() {
+            let vehicles = document.querySelectorAll('.vehicle-item');
+            let selectedBrand = [];
+            let selectedTransmission = [];
+            let maxPrice = document.getElementById('priceRange').value;
+            let priceValue = document.getElementById('priceValue');
+            priceValue.innerText = maxPrice + " €";
+
+            if (document.getElementById('scania').checked) selectedBrand.push("scania");
+            if (document.getElementById('mercedes').checked) selectedBrand.push("mercedes");
+            if (document.getElementById('volvo').checked) selectedBrand.push("volvo");
+            if (document.getElementById('DAF').checked) selectedBrand.push("DAF");
+
+            if (document.getElementById('automatica').checked) selectedTransmission.push("Automática");
+            if (document.getElementById('manual').checked) selectedTransmission.push("Manual");
+
+            vehicles.forEach(vehicle => {
+                let vehicleBrand = vehicle.getAttribute('data-marca');
+                let vehicleTransmission = vehicle.getAttribute('data-transmision');
+                let vehiclePrice = parseInt(vehicle.getAttribute('data-precio'));
+
+                if ((selectedBrand.length === 0 || selectedBrand.includes(vehicleBrand)) &&
+                    (selectedTransmission.length === 0 || selectedTransmission.includes(vehicleTransmission)) &&
+                    vehiclePrice <= maxPrice) {
+                    vehicle.style.display = 'flex';
+                } else {
+                    vehicle.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
